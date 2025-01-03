@@ -478,3 +478,90 @@ for category, items in pairs(categories) do
 	end
 end
 
+local player = game.Players.LocalPlayer
+
+-- Função para criar botões
+local function createButton(name, position, parent, callback)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 250, 0, 50)
+    button.Position = position
+    button.Text = name
+    button.BackgroundColor3 = Color3.new(0.2, 0.5, 0.8)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Font = Enum.Font.GothamBold
+    button.TextSize = 20
+    button.Parent = parent
+    button.MouseButton1Click:Connect(callback)
+    return button
+end
+
+-- Criar a interface gráfica
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 350, 0, 600)
+frame.Position = UDim2.new(0.5, -175, 0.5, -300)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.BorderSizePixel = 2
+frame.BorderColor3 = Color3.new(0.5, 0.5, 0.5)
+frame.Parent = screenGui
+
+-- Título do Menu
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Text = "Script Menu"
+title.TextSize = 24
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+title.Font = Enum.Font.GothamBold
+title.Parent = frame
+
+-- Adicionando categorias e botões
+local categories = {
+    ["Farming"] = {
+        {Name = "Farm Zone 1", Position = Vector3.new(500, 0, 500)},
+        {Name = "Farm Zone 2", Position = Vector3.new(700, 0, 700)}
+    },
+    ["Raids"] = {
+        {Name = "Raid 1", Position = Vector3.new(-500, 0, -500)},
+        {Name = "Raid 2", Position = Vector3.new(-700, 0, -700)}
+    },
+    ["Fruits"] = {
+        {Name = "Fruit Zone 1", Position = Vector3.new(1000, 0, 1000)},
+        {Name = "Fruit Zone 2", Position = Vector3.new(1200, 0, 1200)}
+    },
+    ["Teleport"] = {
+        {Name = "Sea 1", Position = Vector3.new(2000, 0, 2000)},
+        {Name = "Sea 2", Position = Vector3.new(3000, 0, 3000)}
+    },
+    ["Sea Events"] = {
+        {Name = "Event 1", Position = Vector3.new(4000, 0, 4000)},
+        {Name = "Event 2", Position = Vector3.new(5000, 0, 5000)}
+    }
+}
+
+-- Criação das categorias com botões de funcionalidade
+local yOffset = 60
+for category, items in pairs(categories) do
+    -- Título de cada categoria
+    local categoryTitle = Instance.new("TextLabel")
+    categoryTitle.Size = UDim2.new(1, 0, 0, 30)
+    categoryTitle.Position = UDim2.new(0, 0, 0, yOffset)
+    categoryTitle.Text = category
+    categoryTitle.TextSize = 22
+    categoryTitle.TextColor3 = Color3.new(1, 1, 1)
+    categoryTitle.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+    categoryTitle.Font = Enum.Font.GothamBold
+    categoryTitle.Parent = frame
+    yOffset = yOffset + 40
+
+    -- Botões dentro de cada categoria
+    for _, item in ipairs(items) do
+        local button = createButton(item.Name, UDim2.new(0, 0, 0, yOffset), frame, function()
+            -- Ação do botão (como teleportar ou ativar alguma função)
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(item.Position)
+        end)
+        yOffset = yOffset + 60
+    end
+end
